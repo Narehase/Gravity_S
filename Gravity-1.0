@@ -23,7 +23,7 @@ class Gravity:
             axis = n[3]
             self.Pick([axis[0]+self.ry,axis[1]+self.rx],n[2], n[5])
 
-    def sets(self, M, r, Name = "Dokdo",axis = [0,0],color = [0,0,255], Move = "N"):
+    def sets(self, M, r, Name = "Dokdo",axis = [0,0],color = [0,0,255], Acel = [0,0], Move = "N"): #Acel = [deg, a]
         for i in self.Lit:
             if i[0] == Name:
                 print("이름이 같습니다.")
@@ -34,6 +34,10 @@ class Gravity:
         self.Lit.append([Name,M,r,[axis[0]-self.ry,axis[1]-self.rx],0,color,Move])
         
         self.Pick(axis,r,color)
+        
+    def Event(self,Sr,R1,R2):
+        a = Sr - R1 - R2
+        return a
 
     def Calculation_G(self, motion = False):
         lethi = []
@@ -41,6 +45,7 @@ class Gravity:
             ap = n[3]
             L3 = []
             al = []
+            Rtun = []
             for i in self.Lit:
                 if n[0] != i[0]:
                     al.append(i[3])
@@ -52,9 +57,13 @@ class Gravity:
                     # self.Drow(i,Seta, self.Gravity(n[1],i[1],Squid))
                     L3.append([Seta,self.Gravity(n[1],i[1],Squid),i])
                     #print(np.arctan2(x,y)*(180/np.pi))
-
+                    pilit = self.Event(Squid, n[2], i[2]) 
+                    if pilit < 1:
+                        Rtun.append(i[0])
+                     
             x = 0
             y = 0
+            
             for L2 in L3:
                 x += L2[1]*math.cos(math.radians(L2[0])) 
                 y += L2[1]*math.sin(math.radians(L2[0]))
@@ -66,9 +75,9 @@ class Gravity:
             a = self.Drow__(axio,Sert,pick)
             # print(a)
             if n[6] == "Y":
-                lethi.append([n[0],n[1],n[2],n[3],n[4],n[5],n[6]])
+                lethi.append([n[0],n[1],n[2],n[3],n[4],n[5],n[6],n[7]])
             else:
-                lethi.append([n[0],n[1],n[2],a,n[4],n[5],n[6]])
+                lethi.append([n[0],n[1],n[2],a,n[4],n[5],n[6],n[7]])
             #print(x, "::" ,y)
         self.Lit = lethi
         print("a")
